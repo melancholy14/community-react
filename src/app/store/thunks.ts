@@ -181,7 +181,7 @@ export const signup = (id: string, name: string, password: string) => (
   }
 };
 
-export const signin = (id: string, password: string) => (
+export const login = (id: string, password: string) => (
   dispatch: AppDispatch
 ) => {
   dispatch(userRequest());

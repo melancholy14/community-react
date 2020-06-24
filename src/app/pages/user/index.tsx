@@ -3,7 +3,7 @@ import React from 'react';
 import Container from 'app/layouts/container';
 
 import SignUpForm from './SignUpForm';
-import SignInForm from './SignInForm';
+import LoginForm from './LoginForm';
 
 function User() {
   return (
@@ -13,7 +13,7 @@ function User() {
           <SignUpForm />
         </div>
         <div className="w-1/2 p-6">
-          <SignInForm />
+          <LoginForm />
         </div>
       </div>
     </Container>

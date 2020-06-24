@@ -3,9 +3,9 @@ import { useDispatch } from 'react-redux';
 
 import Button from 'app/common/Button';
 import Input from 'app/common/Input';
-import { signin } from 'app/store/thunks';
+import { login } from 'app/store/thunks';
 
-function SignInForm() {
+function LoginForm() {
   const [id, setId] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
@@ -14,7 +14,7 @@ function SignInForm() {
   const onSubmit = (event: React.FormEvent) => {
     event.preventDefault();
 
-    dispatch(signin(id, password));
+    dispatch(login(id, password));
   };
 
   const onChange = (field: 'id' | 'password') => (
@@ -36,7 +36,7 @@ function SignInForm() {
 
   return (
     <>
-      <h2 className="text-lg text-center font-bold">SIGN IN</h2>
+      <h2 className="text-lg text-center font-bold">LOGIN</h2>
       <form onSubmit={onSubmit}>
         <Input
           id="id"
@@ -61,4 +61,4 @@ function SignInForm() {
   );
 }
 
-export default SignInForm;
+export default LoginForm;
