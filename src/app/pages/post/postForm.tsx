@@ -19,9 +19,11 @@ function PostForm({ data, isView }: PostFormProps) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (data) {
-      setTitle(data.title || '');
-      setContent(data.content || '');
+    if (data.title) {
+      setTitle(data.title);
+    }
+    if (data.content) {
+      setContent(data.content);
     }
   }, [dispatch, data]);
 

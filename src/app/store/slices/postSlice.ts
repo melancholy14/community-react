@@ -15,6 +15,7 @@ export const postSlice = createSlice({
   reducers: {
     loadPostListRequest: (state) => {
       state.loading = true;
+      state.error = undefined;
     },
     loadPostListSuccess: (state, action: PayloadAction<PostDetail[]>) => {
       state.loading = false;
@@ -26,6 +27,7 @@ export const postSlice = createSlice({
     },
     loadPostRequest: (state) => {
       state.loading = true;
+      state.error = undefined;
     },
     loadPostSuccess: (state, action: PayloadAction<PostDetail>) => {
       state.loading = false;
@@ -37,6 +39,7 @@ export const postSlice = createSlice({
     },
     savePostRequest: (state) => {
       state.saving = true;
+      state.error = undefined;
     },
     savePostSuccess: (state, action: PayloadAction<PostDetail>) => {
       state.saving = false;
@@ -54,28 +57,28 @@ export const postSlice = createSlice({
     },
     saveCommentRequest: (state) => {
       state.saving = true;
+      state.error = undefined;
     },
     saveCommentSuccess: (state, action: PayloadAction<Comment>) => {
-      // if (state.post) {
-      //   if (!state.post.comments) {
-      //     state.post.comments = [action.payload];
-      //   } else {
-      //     if (action.payload.id) {
-      //       const findIndex = state.post.comments.findIndex(
-      //         ({ id }) => id === action.payload.id
-      //       );
+      if (state.post) {
+        if (!state.post.comments) {
+          state.post.comments = [action.payload];
+        } else {
+          if (action.payload.id) {
+            const findIndex = state.post.comments.findIndex(
+              ({ id }) => id === action.payload.id
+            );
 
-      //       state.post.comments[findIndex] = action.payload;
-      //     } else {
-      //       state.post.comments = [
-      //         action.payload,
-      //         ...(state.post.comments || []),
-      //       ];
-      //     }
-      //   }
-      //   state.saving = false;
-      // }
-      state.saving = false;
+            state.post.comments[findIndex] = action.payload;
+          } else {
+            state.post.comments = [
+              action.payload,
+              ...(state.post.comments || []),
+            ];
+          }
+        }
+        state.saving = false;
+      }
     },
     saveCommentFailure: (state, action: PayloadAction<Error>) => {
       state.saving = false;

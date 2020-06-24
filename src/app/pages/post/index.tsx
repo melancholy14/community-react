@@ -21,9 +21,9 @@ function Post() {
   const { id, type } = useParams();
 
   useEffect(() => {
-    if (!id) {
+    if (!id && post.id) {
       dispatch(clearPost());
-    } else if (id !== post?.id) {
+    } else if (id && id !== post?.id) {
       dispatch(loadPost(id));
     }
   }, [dispatch, id, post]);
@@ -38,11 +38,11 @@ function Post() {
           <>
             <hr className="m-4 border-purple-700" />
             <p>What do you think on this post?</p>
-            <CommentForm />
+            <CommentForm postId={post.id} />
             <hr className="m-4 border-purple-700" />
             {comments &&
               comments.map((comment) => (
-                <CommentForm key={comment.id} data={comment} />
+                <CommentForm key={comment.id} postId={post.id} data={comment} />
               ))}
           </>
         )}

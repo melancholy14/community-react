@@ -143,7 +143,7 @@ export const loadPost = (id: string) => (dispatch: AppDispatch) => {
   }
 };
 
-export const saveComment = (postId: string, comment: Comment) => (
+export const saveComment = (comment: Comment, postId?: string) => (
   dispatch: AppDispatch
 ) => {
   dispatch(saveCommentRequest());

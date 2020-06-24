@@ -6,10 +6,11 @@ import Button from 'app/common/Button';
 import { saveComment } from 'app/store/thunks';
 
 type CommentFormProps = {
+  postId?: string;
   data?: CommentType;
 };
 
-function CommentForm({ data }: CommentFormProps) {
+function CommentForm({ postId, data }: CommentFormProps) {
   const [content, setContent] = useState<string>('');
 
   const dispatch = useDispatch();
@@ -24,10 +25,13 @@ function CommentForm({ data }: CommentFormProps) {
     event.preventDefault();
 
     dispatch(
-      saveComment('1', {
-        id: data?.id || '',
-        content,
-      })
+      saveComment(
+        {
+          id: data?.id || '',
+          content,
+        },
+        postId
+      )
     );
   };
 
