@@ -5,7 +5,11 @@ type ContainerProps = {
 };
 
 function Container({ children }: ContainerProps) {
-  return <div className="container bg-purple-200 h-full-16">{children}</div>;
+  return (
+    <div className="bg-purple-200 pt-16 overflow-auto min-h-full">
+      <div className="container h-full">{children}</div>
+    </div>
+  );
 }
 
 export default Container;

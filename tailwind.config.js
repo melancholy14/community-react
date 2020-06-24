@@ -35,8 +35,11 @@ module.exports = {
         // 17: '4.25rem',
         // 18: '4.5rem',
         // 19: '4.75rem',
-        'full-16': 'calc(100% - 4rem)',
+        // 'full-16': 'calc(100% - 4rem)',
       },
+      // minHeight: {
+      //   full: '100vh',
+      // },
       transitionProperty: {
         // visibility: 'visibility',
         // width: 'width',

@@ -5,9 +5,9 @@ import Container from 'app/layouts/container';
 
 import { selectPost } from 'app/store/selectors';
 import { loadPostList } from 'app/store/thunks';
+import LinkButton from 'app/common/LinkButton';
 
 import Post from './post';
-import { Link } from 'react-router-dom';
 
 function PostList() {
   const { loading, list, error } = useSelector(selectPost);
@@ -26,9 +26,7 @@ function PostList() {
       <div className="w-2/3 m-auto">
         <div className="flex justify-end items-center p-6">
           <div />
-          <Link to="/new" className="bg-purple-500 p-4 rounded-lg">
-            Create Post
-          </Link>
+          <LinkButton to="/new">Create Post</LinkButton>
         </div>
         {loading && <div></div>}
         {!loading && (

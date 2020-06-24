@@ -8,7 +8,7 @@ type PostProps = {
   data: PostDetail;
 };
 
-function Post({ data: { id, title, creator } }: PostProps) {
+function Post({ data: { id, title, author } }: PostProps) {
   const dispatch = useDispatch();
 
   const onView = () => {
@@ -21,7 +21,7 @@ function Post({ data: { id, title, creator } }: PostProps) {
       onClick={onView}
     >
       <h3 className="text-lg font-semibold">{title}</h3>
-      <p>{creator}</p>
+      <p>{author}</p>
     </div>
   );
 }

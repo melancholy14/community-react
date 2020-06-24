@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { PostState, PostDetail } from '../types';
+import { PostState, PostDetail, Comment } from '../types';
 
 const initialState: PostState = {
   loading: false,
@@ -52,6 +52,35 @@ export const postSlice = createSlice({
       state.post = undefined;
       state.error = undefined;
     },
+    saveCommentRequest: (state) => {
+      state.saving = true;
+    },
+    saveCommentSuccess: (state, action: PayloadAction<Comment>) => {
+      // if (state.post) {
+      //   if (!state.post.comments) {
+      //     state.post.comments = [action.payload];
+      //   } else {
+      //     if (action.payload.id) {
+      //       const findIndex = state.post.comments.findIndex(
+      //         ({ id }) => id === action.payload.id
+      //       );
+
+      //       state.post.comments[findIndex] = action.payload;
+      //     } else {
+      //       state.post.comments = [
+      //         action.payload,
+      //         ...(state.post.comments || []),
+      //       ];
+      //     }
+      //   }
+      //   state.saving = false;
+      // }
+      state.saving = false;
+    },
+    saveCommentFailure: (state, action: PayloadAction<Error>) => {
+      state.saving = false;
+      state.error = action.payload;
+    },
   },
 });
 
@@ -66,6 +95,9 @@ export const {
   savePostSuccess,
   savePostFailure,
   clearPost,
+  saveCommentRequest,
+  saveCommentSuccess,
+  saveCommentFailure,
 } = postSlice.actions;
 
 export default postSlice.reducer;

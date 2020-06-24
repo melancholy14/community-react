@@ -1,6 +1,6 @@
 import { AppDispatch } from '.';
 
-import { PostDetail } from './types';
+import { PostDetail, Comment } from './types';
 import {
   loadPostListRequest,
   loadPostListSuccess,
@@ -11,6 +11,9 @@ import {
   loadPostRequest,
   loadPostFailure,
   loadPostSuccess,
+  saveCommentRequest,
+  saveCommentSuccess,
+  saveCommentFailure,
 } from './slices/postSlice';
 import { push } from 'connected-react-router';
 
@@ -22,22 +25,22 @@ export const loadPostList = () => (dispatch: AppDispatch) => {
       {
         id: '1',
         title: 'adfsdf',
-        creator: 'aaaaaa',
+        author: 'aaaaaa',
       },
       {
         id: '2',
         title: 'adfsdf333',
-        creator: 'aaaaaa',
+        author: 'aaaaaa',
       },
       {
         id: '3',
         title: 'adfsdfr33',
-        creator: 'aaaaaa',
+        author: 'aaaaaa',
       },
       {
         id: '4',
         title: 'adfsdft3tseger',
-        creator: 'aaaaaa',
+        author: 'aaaaaa',
       },
     ];
 
@@ -55,13 +58,13 @@ export const savePost = (postDetail: Partial<PostDetail>) => (
   try {
     const { id, title = '', content } = postDetail;
 
-    const creator = 'askjdgbalrg';
+    const author = 'askjdgbalrg';
 
     dispatch(
       savePostSuccess({
         title,
         content,
-        creator,
+        author,
         id: id || 'asgalrgoiehrgoehrogr',
       })
     );
@@ -80,25 +83,48 @@ export const loadPost = (id: string) => (dispatch: AppDispatch) => {
       {
         id: '1',
         title: 'adfsdf',
-        creator: 'aaaaaa',
+        author: 'aaaaaa',
         content: 'faskdjgalrgar',
       },
       {
         id: '2',
         title: 'adfsdf333',
-        creator: 'aaaaaa',
+        author: 'aaaaaa',
         content: 'faskdjgalrgar',
       },
       {
         id: '3',
         title: 'adfsdfr33',
-        creator: 'aaaaaa',
+        author: 'aaaaaa',
         content: 'faskdjgalrgar',
       },
       {
         id: '4',
         title: 'adfsdft3tseger',
-        creator: 'aaaaaa',
+        author: 'aaaaaa',
+        content: 'faskdjgalrgar',
+      },
+    ];
+
+    const comments: Comment[] = [
+      {
+        id: '1',
+        author: 'aaaaaa',
+        content: 'faskdjgalrgar',
+      },
+      {
+        id: '2',
+        author: 'aaaaaa',
+        content: 'faskdjgalrgar',
+      },
+      {
+        id: '3',
+        author: 'aaaaaa',
+        content: 'faskdjgalrgar',
+      },
+      {
+        id: '4',
+        author: 'aaaaaa',
         content: 'faskdjgalrgar',
       },
     ];
@@ -109,8 +135,32 @@ export const loadPost = (id: string) => (dispatch: AppDispatch) => {
       throw new Error('Not Found Post');
     }
 
+    post.comments = comments;
+
     dispatch(loadPostSuccess(post));
   } catch (error) {
     dispatch(loadPostFailure(error));
+  }
+};
+
+export const saveComment = (postId: string, comment: Comment) => (
+  dispatch: AppDispatch
+) => {
+  dispatch(saveCommentRequest());
+
+  try {
+    const { id, content } = comment;
+
+    const author = 'askjdgbalrg';
+
+    dispatch(
+      saveCommentSuccess({
+        content,
+        author,
+        id: id || 'asgalrgoiehehrogr',
+      })
+    );
+  } catch (error) {
+    dispatch(saveCommentFailure(error));
   }
 };
