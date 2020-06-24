@@ -1,12 +1,10 @@
 import { AppDispatch } from '.';
-import {
-  loadPostsRequest,
-  loadPostsSuccess,
-  loadPostsFailure,
-} from './slices/postListSlice';
 
-import { Post, PostDetail } from './types';
+import { PostDetail } from './types';
 import {
+  loadPostListRequest,
+  loadPostListSuccess,
+  loadPostListFailure,
   savePostRequest,
   savePostSuccess,
   savePostFailure,
@@ -17,10 +15,10 @@ import {
 import { push } from 'connected-react-router';
 
 export const loadPostList = () => (dispatch: AppDispatch) => {
-  dispatch(loadPostsRequest());
+  dispatch(loadPostListRequest());
 
   try {
-    const posts: Post[] = [
+    const posts: PostDetail[] = [
       {
         id: '1',
         title: 'adfsdf',
@@ -43,17 +41,30 @@ export const loadPostList = () => (dispatch: AppDispatch) => {
       },
     ];
 
-    dispatch(loadPostsSuccess(posts));
+    dispatch(loadPostListSuccess(posts));
   } catch (error) {
-    dispatch(loadPostsFailure(error));
+    dispatch(loadPostListFailure(error));
   }
 };
 
-export const savePost = (postDetail: PostDetail) => (dispatch: AppDispatch) => {
+export const savePost = (postDetail: Partial<PostDetail>) => (
+  dispatch: AppDispatch
+) => {
   dispatch(savePostRequest());
 
   try {
-    dispatch(savePostSuccess(postDetail));
+    const { id, title = '', content } = postDetail;
+
+    const creator = 'askjdgbalrg';
+
+    dispatch(
+      savePostSuccess({
+        title,
+        content,
+        creator,
+        id: id || 'asgalrgoiehrgoehrogr',
+      })
+    );
 
     dispatch(push('/fheih/view'));
   } catch (error) {

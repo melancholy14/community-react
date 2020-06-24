@@ -2,10 +2,10 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { push } from 'connected-react-router';
 
-import { Post as PostType } from 'app/store/types';
+import { PostDetail } from 'app/store/types';
 
 type PostProps = {
-  data: PostType;
+  data: PostDetail;
 };
 
 function Post({ data: { id, title, creator } }: PostProps) {

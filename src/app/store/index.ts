@@ -1,5 +1,17 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 
-export default configureStore({
-  reducer: {},
+import { createBrowserHistory } from 'history';
+import { routerMiddleware } from 'connected-react-router';
+import createRootReducer from './reducers';
+
+export const history = createBrowserHistory();
+
+const store = configureStore({
+  reducer: createRootReducer(history),
+  middleware: getDefaultMiddleware().concat(routerMiddleware(history)),
 });
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
+
+export default store;

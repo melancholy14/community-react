@@ -1,22 +1,14 @@
-export type Post = {
+export type PostDetail = {
   id: string;
   title: string;
   creator: string;
-};
-
-export type PostDetail = Post & {
-  content: string;
-};
-
-export type PostListState = {
-  loading?: boolean;
-  data?: Post[];
-  error?: Error;
+  content?: string;
 };
 
 export type PostState = {
   loading?: boolean;
   saving?: boolean;
-  data?: PostDetail;
+  list?: PostDetail[];
+  post?: PostDetail;
   error?: Error;
 };
