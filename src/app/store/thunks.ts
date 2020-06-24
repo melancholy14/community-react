@@ -1,3 +1,5 @@
+import { push } from 'connected-react-router';
+
 import { AppDispatch } from '.';
 
 import { PostDetail, Comment } from './types';
@@ -15,7 +17,7 @@ import {
   saveCommentSuccess,
   saveCommentFailure,
 } from './slices/postSlice';
-import { push } from 'connected-react-router';
+import { userRequest, userSuccess, userFailure } from './slices/userSlice';
 
 export const loadPostList = () => (dispatch: AppDispatch) => {
   dispatch(loadPostListRequest());
@@ -162,5 +164,33 @@ export const saveComment = (comment: Comment, postId?: string) => (
     );
   } catch (error) {
     dispatch(saveCommentFailure(error));
+  }
+};
+
+export const signup = (id: string, name: string, password: string) => (
+  dispatch: AppDispatch
+) => {
+  dispatch(userRequest());
+
+  try {
+    dispatch(userSuccess({ id, name }));
+
+    dispatch(push('/'));
+  } catch (error) {
+    dispatch(userFailure(error));
+  }
+};
+
+export const signin = (id: string, password: string) => (
+  dispatch: AppDispatch
+) => {
+  dispatch(userRequest());
+
+  try {
+    dispatch(userSuccess({ id }));
+
+    dispatch(push('/'));
+  } catch (error) {
+    dispatch(userFailure(error));
   }
 };

@@ -1,3 +1,13 @@
+export type User = {
+  id?: string;
+  name?: string;
+};
+
+export type UserState = User & {
+  error?: Error;
+  loading?: boolean;
+};
+
 export type Comment = {
   id: string;
   content: string;

@@ -1,14 +1,14 @@
 import { combineReducers } from 'redux';
 import { connectRouter } from 'connected-react-router';
 
-// import postListReducer from './slices/postListSlice';
 import postReducer from './slices/postSlice';
+import userReducer from './slices/userSlice';
 
 const createRootReducer = (history: any) =>
   combineReducers({
     router: connectRouter(history),
-    // postList: postListReducer,
     post: postReducer,
+    user: userReducer,
   });
 
 export default createRootReducer;
