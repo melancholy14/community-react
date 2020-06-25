@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { UserState, User } from '../types';
+import { UserState, User, InnerError } from '../types';
 
 const initialState: UserState = {
   id: undefined,
@@ -22,7 +22,7 @@ export const userSlice = createSlice({
       state.id = action.payload.id;
       state.name = action.payload.name;
     },
-    userFailure: (state, action: PayloadAction<Error>) => {
+    userFailure: (state, action: PayloadAction<InnerError>) => {
       state.loading = false;
       state.error = action.payload;
     },

@@ -39,14 +39,14 @@ function LoginForm() {
       <h2 className="text-lg text-center font-bold">LOGIN</h2>
       <form onSubmit={onSubmit}>
         <Input
-          id="id"
+          id="login-id"
           label="ID"
           className="my-3"
           value={id}
           onChange={onChange('id')}
         />
         <Input
-          id="password"
+          id="login-password"
           label="PASSWORD"
           type="password"
           className="my-3"

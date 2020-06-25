@@ -3,8 +3,13 @@ export type User = {
   name?: string;
 };
 
+export type InnerError = {
+  status?: string;
+  message?: string;
+};
+
 export type UserState = User & {
-  error?: Error;
+  error?: InnerError;
   loading?: boolean;
 };
 
@@ -29,5 +34,7 @@ export type PostState = {
   saving?: boolean;
   list?: PostDetail[];
   post?: PostDetail;
-  error?: Error;
+  error?: InnerError;
 };
+
+export type ErrorState = InnerError;

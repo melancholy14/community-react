@@ -43,21 +43,21 @@ function SignUpForm() {
       <h2 className="text-lg text-center font-bold">SIGN UP</h2>
       <form onSubmit={onSubmit}>
         <Input
-          id="id"
+          id="signup-id"
           label="ID"
           className="my-3"
           value={id}
           onChange={onChange('id')}
         />
         <Input
-          id="name"
+          id="signup-name"
           label="NAME"
           className="my-3"
           value={name}
           onChange={onChange('name')}
         />
         <Input
-          id="password"
+          id="signup-password"
           type="password"
           label="PASSWORD"
           className="my-3"

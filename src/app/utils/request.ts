@@ -1,4 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios';
+import { InnerError } from 'app/store/types';
 
 const API_URL = 'http://localhost:8080';
 
@@ -23,6 +24,11 @@ export default async function request(
   } catch (error) {
     console.error('In request', error);
 
-    throw error;
+    const apiError: InnerError = {
+      status: error.response.status,
+      message: error.response.data || error.response.statusText,
+    };
+
+    throw apiError;
   }
 }

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { PostState, PostDetail, Comment } from '../types';
+import { PostState, PostDetail, Comment, InnerError } from '../types';
 
 const initialState: PostState = {
   loading: false,
@@ -21,7 +21,7 @@ export const postSlice = createSlice({
       state.loading = false;
       state.list = action.payload;
     },
-    loadPostListFailure: (state, action: PayloadAction<Error>) => {
+    loadPostListFailure: (state, action: PayloadAction<InnerError>) => {
       state.loading = false;
       state.error = action.payload;
     },
@@ -33,7 +33,7 @@ export const postSlice = createSlice({
       state.loading = false;
       state.post = action.payload;
     },
-    loadPostFailure: (state, action: PayloadAction<Error>) => {
+    loadPostFailure: (state, action: PayloadAction<InnerError>) => {
       state.loading = false;
       state.error = action.payload;
     },
@@ -45,7 +45,7 @@ export const postSlice = createSlice({
       state.saving = false;
       state.post = { ...state.post, ...action.payload };
     },
-    savePostFailure: (state, action: PayloadAction<Error>) => {
+    savePostFailure: (state, action: PayloadAction<InnerError>) => {
       state.saving = false;
       state.error = action.payload;
     },
@@ -84,7 +84,7 @@ export const postSlice = createSlice({
         state.saving = false;
       }
     },
-    saveCommentFailure: (state, action: PayloadAction<Error>) => {
+    saveCommentFailure: (state, action: PayloadAction<InnerError>) => {
       state.saving = false;
       state.error = action.payload;
     },
