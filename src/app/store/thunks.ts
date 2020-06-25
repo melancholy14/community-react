@@ -18,7 +18,6 @@ import {
   saveCommentSuccess,
   saveCommentFailure,
   deletePostRequest,
-  deletePostSuccess,
   deletePostFailure,
   deleteCommentRequest,
   deleteCommentSuccess,
@@ -99,8 +98,6 @@ export const deletePost = (id: string) => async (dispatch: AppDispatch) => {
     await request(`/post/${id}`, {
       method: 'DELETE',
     });
-
-    dispatch(deletePostSuccess());
 
     dispatch(push('/'));
   } catch (error) {

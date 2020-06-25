@@ -30,8 +30,8 @@ export type PostDetail = {
 };
 
 export type PostState = {
-  loading?: boolean;
-  saving?: boolean;
+  loading: boolean;
+  saving: boolean;
   list?: PostDetail[];
   post?: PostDetail;
   error?: InnerError;

@@ -52,9 +52,6 @@ export const postSlice = createSlice({
     deletePostRequest: (state) => {
       state.error = undefined;
     },
-    deletePostSuccess: (state) => {
-      state.post = undefined;
-    },
     deletePostFailure: (state, action: PayloadAction<InnerError>) => {
       state.error = action.payload;
     },
@@ -124,7 +121,6 @@ export const {
   savePostSuccess,
   savePostFailure,
   deletePostRequest,
-  deletePostSuccess,
   deletePostFailure,
   clearPost,
   saveCommentRequest,
