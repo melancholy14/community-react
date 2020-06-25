@@ -157,3 +157,15 @@ export const login = (id: string, password: string) => async (
     dispatch(userFailure(error));
   }
 };
+
+export const logout = () => async (dispatch: AppDispatch) => {
+  dispatch(userRequest());
+
+  try {
+    dispatch(userSuccess({ id: undefined, name: undefined }));
+
+    dispatch(push('/'));
+  } catch (error) {
+    dispatch(userFailure(error));
+  }
+};

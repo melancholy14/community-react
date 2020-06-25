@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { format } from 'date-fns';
 
 import { savePost } from 'app/store/thunks';
 
@@ -7,6 +8,7 @@ import LinkButton from 'app/common/LinkButton';
 import { PostDetail } from 'app/store/types';
 import Button from 'app/common/Button';
 import { selectUser } from 'app/store/selectors';
+import Label from 'app/common/Label';
 
 type PostFormProps = {
   data: Partial<PostDetail>;
@@ -57,10 +59,7 @@ function PostForm({ data, isView }: PostFormProps) {
 
   return (
     <form className="pt-20" onSubmit={onSubmit}>
-      <div className="flex items-center my-2">
-        <label htmlFor="title" className="w-1/6">
-          Title
-        </label>
+      <Label id="title" label="Title">
         <input
           type="text"
           id="title"
@@ -69,25 +68,24 @@ function PostForm({ data, isView }: PostFormProps) {
           value={title}
           onChange={onChangeTitle}
         />
-      </div>
+      </Label>
       {data?.author && (
-        <div className="flex items-center my-2">
-          <label htmlFor="title" className="w-1/6">
-            Created By
-          </label>
+        <Label id="author" label="Created By">
           <p>{data.author.name}</p>
-        </div>
+        </Label>
       )}
-      <div className="flex flex-col my-2">
-        <label htmlFor="content">Content</label>
-        <textarea
-          id="content"
-          className="h-40 p-3 focus:outline-none"
-          disabled={isView}
-          value={content}
-          onChange={onChangeContent}
-        />
-      </div>
+      {data?.created && (
+        <Label id="created" label="Created At">
+          <p>{format(new Date(data.created), 'dd MMMM yyyy, HH:mm')}</p>
+        </Label>
+      )}
+      <textarea
+        id="content"
+        className="w-full h-40 p-3 focus:outline-none"
+        disabled={isView}
+        value={content}
+        onChange={onChangeContent}
+      />
       {!isView && (
         <div className="flex justify-end">
           <Button type="submit">Submit</Button>

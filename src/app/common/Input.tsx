@@ -12,7 +12,9 @@ type InputProps = {
 function Input({ type, label, id, className, value, onChange }: InputProps) {
   return (
     <div className={`flex flex-col ${className || ''}`}>
-      <label htmlFor={id}>{label}</label>
+      <label className="font-semi" htmlFor={id}>
+        {label}
+      </label>
       <input id={id} type={type || 'text'} value={value} onChange={onChange} />
     </div>
   );

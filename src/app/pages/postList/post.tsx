@@ -2,13 +2,17 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { push } from 'connected-react-router';
 
+import { format } from 'date-fns';
+
 import { PostDetail } from 'app/store/types';
 
 type PostProps = {
   data: PostDetail;
 };
 
-function Post({ data: { id, title, author } }: PostProps) {
+function Post({
+  data: { id, title, author: { name } = {}, created },
+}: PostProps) {
   const dispatch = useDispatch();
 
   const onView = () => {
@@ -21,7 +25,11 @@ function Post({ data: { id, title, author } }: PostProps) {
       onClick={onView}
     >
       <h3 className="text-lg font-semibold">{title}</h3>
-      <p>{author?.name}</p>
+      <p>
+        <span>{name}</span>
+        <span> | </span>
+        {created && <span>{format(new Date(created), 'dd MMM yyyy')}</span>}
+      </p>
     </div>
   );
 }
