@@ -2,7 +2,7 @@ import { push } from 'connected-react-router';
 
 import { AppDispatch } from '.';
 
-import { PostDetail, Comment } from './types';
+import { PostDetail, Comment, User } from './types';
 import {
   loadPostListRequest,
   loadPostListSuccess,
@@ -18,33 +18,13 @@ import {
   saveCommentFailure,
 } from './slices/postSlice';
 import { userRequest, userSuccess, userFailure } from './slices/userSlice';
+import request from 'app/utils/request';
 
-export const loadPostList = () => (dispatch: AppDispatch) => {
+export const loadPostList = () => async (dispatch: AppDispatch) => {
   dispatch(loadPostListRequest());
 
   try {
-    const posts: PostDetail[] = [
-      {
-        id: '1',
-        title: 'adfsdf',
-        author: 'aaaaaa',
-      },
-      {
-        id: '2',
-        title: 'adfsdf333',
-        author: 'aaaaaa',
-      },
-      {
-        id: '3',
-        title: 'adfsdfr33',
-        author: 'aaaaaa',
-      },
-      {
-        id: '4',
-        title: 'adfsdft3tseger',
-        author: 'aaaaaa',
-      },
-    ];
+    const posts: PostDetail[] = await request('/post');
 
     dispatch(loadPostListSuccess(posts));
   } catch (error) {
@@ -52,86 +32,46 @@ export const loadPostList = () => (dispatch: AppDispatch) => {
   }
 };
 
-export const savePost = (postDetail: Partial<PostDetail>) => (
-  dispatch: AppDispatch
-) => {
+export const savePost = (
+  postDetail: Partial<PostDetail>,
+  user?: User
+) => async (dispatch: AppDispatch) => {
   dispatch(savePostRequest());
 
   try {
-    const { id, title = '', content } = postDetail;
+    const { id } = postDetail;
 
-    const author = 'askjdgbalrg';
+    let response = null;
+    if (id) {
+      response = await request(`/post/${id}`, {
+        method: 'PUT',
+        data: postDetail,
+      });
+    } else if (user) {
+      response = await request('/post', {
+        method: 'POST',
+        data: {
+          author: user,
+          ...postDetail,
+        },
+      });
+    }
 
-    dispatch(
-      savePostSuccess({
-        title,
-        content,
-        author,
-        id: id || 'asgalrgoiehrgoehrogr',
-      })
-    );
+    dispatch(savePostSuccess(response));
 
-    dispatch(push('/fheih/view'));
+    dispatch(push(`/${response.id}/view`));
   } catch (error) {
     dispatch(savePostFailure(error));
   }
 };
 
-export const loadPost = (id: string) => (dispatch: AppDispatch) => {
+export const loadPost = (id: string) => async (dispatch: AppDispatch) => {
   dispatch(loadPostRequest());
 
   try {
-    const posts: PostDetail[] = [
-      {
-        id: '1',
-        title: 'adfsdf',
-        author: 'aaaaaa',
-        content: 'faskdjgalrgar',
-      },
-      {
-        id: '2',
-        title: 'adfsdf333',
-        author: 'aaaaaa',
-        content: 'faskdjgalrgar',
-      },
-      {
-        id: '3',
-        title: 'adfsdfr33',
-        author: 'aaaaaa',
-        content: 'faskdjgalrgar',
-      },
-      {
-        id: '4',
-        title: 'adfsdft3tseger',
-        author: 'aaaaaa',
-        content: 'faskdjgalrgar',
-      },
-    ];
+    const post: PostDetail = await request(`/post/${id}`);
 
-    const comments: Comment[] = [
-      {
-        id: '1',
-        author: 'aaaaaa',
-        content: 'faskdjgalrgar',
-      },
-      {
-        id: '2',
-        author: 'aaaaaa',
-        content: 'faskdjgalrgar',
-      },
-      {
-        id: '3',
-        author: 'aaaaaa',
-        content: 'faskdjgalrgar',
-      },
-      {
-        id: '4',
-        author: 'aaaaaa',
-        content: 'faskdjgalrgar',
-      },
-    ];
-
-    const post = posts.find(({ id: postId }) => id === postId);
+    const comments: Comment[] = await request(`/post/${id}/comment`);
 
     if (!post) {
       throw new Error('Not Found Post');
@@ -145,23 +85,33 @@ export const loadPost = (id: string) => (dispatch: AppDispatch) => {
   }
 };
 
-export const saveComment = (comment: Comment, postId?: string) => (
-  dispatch: AppDispatch
-) => {
+export const saveComment = (
+  comment: Comment,
+  postId?: string,
+  user?: User
+) => async (dispatch: AppDispatch) => {
   dispatch(saveCommentRequest());
 
   try {
-    const { id, content } = comment;
+    const { id } = comment;
 
-    const author = 'askjdgbalrg';
+    let response = null;
+    if (id) {
+      response = await request(`/post/${postId}/comment/${id}`, {
+        method: 'PUT',
+        data: comment,
+      });
+    } else if (user) {
+      response = await request(`/post/${postId}/comment`, {
+        method: 'POST',
+        data: {
+          author: user,
+          ...comment,
+        },
+      });
+    }
 
-    dispatch(
-      saveCommentSuccess({
-        content,
-        author,
-        id: id || 'asgalrgoiehehrogr',
-      })
-    );
+    dispatch(saveCommentSuccess(response));
   } catch (error) {
     dispatch(saveCommentFailure(error));
   }

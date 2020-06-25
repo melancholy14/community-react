@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Comment as CommentType } from 'app/store/types';
 import Button from 'app/common/Button';
 import { saveComment } from 'app/store/thunks';
+import { selectUser } from 'app/store/selectors';
 
 type CommentFormProps = {
   postId?: string;
@@ -14,6 +15,8 @@ function CommentForm({ postId, data }: CommentFormProps) {
   const [content, setContent] = useState<string>('');
 
   const dispatch = useDispatch();
+
+  const user = useSelector(selectUser);
 
   useEffect(() => {
     if (data) {
@@ -30,9 +33,12 @@ function CommentForm({ postId, data }: CommentFormProps) {
           id: data?.id || '',
           content,
         },
-        postId
+        postId,
+        user
       )
     );
+
+    setContent('');
   };
 
   const onChangeContent = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -41,7 +47,7 @@ function CommentForm({ postId, data }: CommentFormProps) {
     setContent(value);
   };
 
-  const isView = data?.author === 'aaaaa';
+  const isView = !user.id || (data && data?.author?.id !== user.id);
 
   return (
     <form
@@ -50,12 +56,14 @@ function CommentForm({ postId, data }: CommentFormProps) {
     >
       {data?.author && (
         <div className="w-1/6 mr-2">
-          <p>{data.author}</p>
+          <p>{data.author.name}</p>
         </div>
       )}
       <textarea
         id="content"
-        className={`h-12 p-3 focus:outline-none ${isView ? 'w-5/6' : 'w-4/6'}`}
+        className={`h-12 p-1 focus:outline-none text-sm ${
+          isView ? 'w-5/6' : 'w-4/6'
+        }`}
         disabled={isView}
         value={content}
         onChange={onChangeContent}

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { savePost } from 'app/store/thunks';
 
 import LinkButton from 'app/common/LinkButton';
 import { PostDetail } from 'app/store/types';
 import Button from 'app/common/Button';
+import { selectUser } from 'app/store/selectors';
 
 type PostFormProps = {
   data: Partial<PostDetail>;
@@ -16,14 +17,14 @@ function PostForm({ data, isView }: PostFormProps) {
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
 
+  const user = useSelector(selectUser);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (data.title) {
-      setTitle(data.title);
-    }
-    if (data.content) {
-      setContent(data.content);
+    if (data) {
+      setTitle(data.title || '');
+      setContent(data.content || '');
     }
   }, [dispatch, data]);
 
@@ -31,11 +32,14 @@ function PostForm({ data, isView }: PostFormProps) {
     event.preventDefault();
 
     dispatch(
-      savePost({
-        id: data.id,
-        title,
-        content,
-      })
+      savePost(
+        {
+          id: data.id,
+          title,
+          content,
+        },
+        user
+      )
     );
   };
 
@@ -71,7 +75,7 @@ function PostForm({ data, isView }: PostFormProps) {
           <label htmlFor="title" className="w-1/6">
             Created By
           </label>
-          <p>{data.author}</p>
+          <p>{data.author.name}</p>
         </div>
       )}
       <div className="flex flex-col my-2">
@@ -89,7 +93,7 @@ function PostForm({ data, isView }: PostFormProps) {
           <Button type="submit">Submit</Button>
         </div>
       )}
-      {isView && (
+      {user.id === data?.author?.id && isView && (
         <div className="flex justify-end">
           <LinkButton to={`/${data.id}/edit`}>Edit</LinkButton>
         </div>

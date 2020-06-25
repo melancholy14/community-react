@@ -11,14 +11,14 @@ export type UserState = User & {
 export type Comment = {
   id: string;
   content: string;
-  author?: string;
+  author?: User;
   created?: Date;
 };
 
 export type PostDetail = {
   id: string;
   title: string;
-  author?: string;
+  author?: User;
   created?: Date;
   content?: string;
   comments?: Comment[];

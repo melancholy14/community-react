@@ -21,7 +21,7 @@ function Post({ data: { id, title, author } }: PostProps) {
       onClick={onView}
     >
       <h3 className="text-lg font-semibold">{title}</h3>
-      <p>{author}</p>
+      <p>{author?.name}</p>
     </div>
   );
 }

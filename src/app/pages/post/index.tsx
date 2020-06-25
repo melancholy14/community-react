@@ -20,13 +20,15 @@ function Post() {
 
   const { id, type } = useParams();
 
+  const postId = post.id;
+
   useEffect(() => {
-    if (!id && post.id) {
+    if (!id && postId) {
       dispatch(clearPost());
-    } else if (id && id !== post?.id) {
+    } else if (id && id !== postId) {
       dispatch(loadPost(id));
     }
-  }, [dispatch, id, post]);
+  }, [dispatch, id, postId]);
 
   const isView = type === 'view';
 

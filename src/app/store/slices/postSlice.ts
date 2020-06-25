@@ -43,7 +43,7 @@ export const postSlice = createSlice({
     },
     savePostSuccess: (state, action: PayloadAction<PostDetail>) => {
       state.saving = false;
-      state.post = action.payload;
+      state.post = { ...state.post, ...action.payload };
     },
     savePostFailure: (state, action: PayloadAction<Error>) => {
       state.saving = false;
@@ -69,7 +69,11 @@ export const postSlice = createSlice({
               ({ id }) => id === action.payload.id
             );
 
-            state.post.comments[findIndex] = action.payload;
+            if (findIndex > -1) {
+              state.post.comments[findIndex] = action.payload;
+            } else {
+              state.post.comments = [...state.post.comments, action.payload];
+            }
           } else {
             state.post.comments = [
               action.payload,
