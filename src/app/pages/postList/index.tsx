@@ -25,20 +25,18 @@ function PostList() {
 
   return (
     <Container>
-      <div className="w-2/3 m-auto">
-        <div className="flex justify-end items-center p-6">
-          <div />
-          {name && <LinkButton to="/new">Create Post</LinkButton>}
-        </div>
-        {loading && <div></div>}
-        {!loading && (
-          <div>
-            {list?.map((post) => (
-              <Post key={post.id} data={post} />
-            ))}
-          </div>
-        )}
+      <div className="flex justify-end items-center p-6">
+        <div />
+        {name && <LinkButton to="/new">Create Post</LinkButton>}
       </div>
+      {loading && <div></div>}
+      {!loading && (
+        <div>
+          {list?.map((post) => (
+            <Post key={post.id} data={post} />
+          ))}
+        </div>
+      )}
     </Container>
   );
 }

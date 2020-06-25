@@ -49,6 +49,15 @@ export const postSlice = createSlice({
       state.saving = false;
       state.error = action.payload;
     },
+    deletePostRequest: (state) => {
+      state.error = undefined;
+    },
+    deletePostSuccess: (state) => {
+      state.post = undefined;
+    },
+    deletePostFailure: (state, action: PayloadAction<InnerError>) => {
+      state.error = action.payload;
+    },
     clearPost: (state) => {
       state.loading = false;
       state.saving = false;
@@ -88,6 +97,19 @@ export const postSlice = createSlice({
       state.saving = false;
       state.error = action.payload;
     },
+    deleteCommentRequest: (state) => {
+      state.error = undefined;
+    },
+    deleteCommentSuccess: (state, action: PayloadAction<string>) => {
+      if (state.post?.comments) {
+        state.post.comments = state.post.comments.filter(
+          ({ id }) => id !== action.payload
+        );
+      }
+    },
+    deleteCommentFailure: (state, action: PayloadAction<InnerError>) => {
+      state.error = action.payload;
+    },
   },
 });
 
@@ -101,10 +123,16 @@ export const {
   savePostRequest,
   savePostSuccess,
   savePostFailure,
+  deletePostRequest,
+  deletePostSuccess,
+  deletePostFailure,
   clearPost,
   saveCommentRequest,
   saveCommentSuccess,
   saveCommentFailure,
+  deleteCommentRequest,
+  deleteCommentSuccess,
+  deleteCommentFailure,
 } = postSlice.actions;
 
 export default postSlice.reducer;

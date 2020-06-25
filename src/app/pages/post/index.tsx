@@ -34,21 +34,19 @@ function Post() {
 
   return (
     <Container>
-      <div className="w-2/3 m-auto ">
-        {post && <PostForm data={post} isView={isView} />}
-        {isView && (
-          <>
-            <hr className="m-4 border-purple-700" />
-            <p>What do you think on this post?</p>
-            <CommentForm postId={post.id} />
-            <hr className="m-4 border-purple-700" />
-            {comments &&
-              comments.map((comment) => (
-                <CommentForm key={comment.id} postId={post.id} data={comment} />
-              ))}
-          </>
-        )}
-      </div>
+      {post && <PostForm data={post} isView={isView} />}
+      {isView && (
+        <>
+          <hr className="m-4 border-purple-700" />
+          <p>What do you think on this post?</p>
+          <CommentForm postId={post.id} />
+          <hr className="m-4 border-purple-700" />
+          {comments &&
+            comments.map((comment) => (
+              <CommentForm key={comment.id} postId={post.id} data={comment} />
+            ))}
+        </>
+      )}
     </Container>
   );
 }

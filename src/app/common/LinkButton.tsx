@@ -9,7 +9,10 @@ type LinkButtonProps = {
 
 function LinkButton({ to, className, children }: LinkButtonProps) {
   return (
-    <Link to={to} className={`bg-purple-300 p-4 rounded-lg ${className || ''}`}>
+    <Link
+      to={to}
+      className={`bg-purple-300 py-2 px-4 rounded-lg ${className || ''}`}
+    >
       {children}
     </Link>
   );

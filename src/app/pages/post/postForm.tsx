@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { format } from 'date-fns';
 
-import { savePost } from 'app/store/thunks';
+import { savePost, deletePost } from 'app/store/thunks';
 
 import LinkButton from 'app/common/LinkButton';
 import { PostDetail } from 'app/store/types';
@@ -43,6 +43,12 @@ function PostForm({ data, isView }: PostFormProps) {
         user
       )
     );
+  };
+
+  const onDelete = () => {
+    if (data.id) {
+      dispatch(deletePost(data.id));
+    }
   };
 
   const onChangeTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -93,6 +99,9 @@ function PostForm({ data, isView }: PostFormProps) {
       )}
       {user.id === data?.author?.id && isView && (
         <div className="flex justify-end">
+          <Button onClick={onDelete} className="mr-3">
+            Delete
+          </Button>
           <LinkButton to={`/${data.id}/edit`}>Edit</LinkButton>
         </div>
       )}

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { Comment as CommentType } from 'app/store/types';
 import Button from 'app/common/Button';
-import { saveComment } from 'app/store/thunks';
+import { saveComment, deleteComment } from 'app/store/thunks';
 import { selectUser } from 'app/store/selectors';
 
 type CommentFormProps = {
@@ -41,12 +41,19 @@ function CommentForm({ postId, data }: CommentFormProps) {
     setContent('');
   };
 
+  const onDelete = () => {
+    if (postId && data?.id) {
+      dispatch(deleteComment(postId, data.id));
+    }
+  };
+
   const onChangeContent = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { value } = event.target;
 
     setContent(value);
   };
 
+  const isAuthor = data && data?.author?.id === user.id;
   const isView = !user.id || (data && data?.author?.id !== user.id);
 
   return (
@@ -56,7 +63,7 @@ function CommentForm({ postId, data }: CommentFormProps) {
     >
       {data?.author && (
         <div className="w-1/6 mr-2">
-          <p>{data.author.name}</p>
+          <p className="italic font-semibold">{data.author.name}</p>
         </div>
       )}
       <textarea
@@ -69,8 +76,16 @@ function CommentForm({ postId, data }: CommentFormProps) {
         onChange={onChangeContent}
       />
       {!isView && (
-        <Button type="submit" className="w-1/6 ml-2">
+        <Button
+          type="submit"
+          className={`${isAuthor ? 'w-1/12' : 'w-1/6'} ml-2`}
+        >
           Submit
+        </Button>
+      )}
+      {isAuthor && (
+        <Button className="w-1/12 ml-2" onClick={onDelete}>
+          Delete
         </Button>
       )}
     </form>

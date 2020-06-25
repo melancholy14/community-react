@@ -17,6 +17,12 @@ import {
   saveCommentRequest,
   saveCommentSuccess,
   saveCommentFailure,
+  deletePostRequest,
+  deletePostSuccess,
+  deletePostFailure,
+  deleteCommentRequest,
+  deleteCommentSuccess,
+  deleteCommentFailure,
 } from './slices/postSlice';
 import { userRequest, userSuccess, userFailure } from './slices/userSlice';
 import request from 'app/utils/request';
@@ -86,6 +92,22 @@ export const loadPost = (id: string) => async (dispatch: AppDispatch) => {
   }
 };
 
+export const deletePost = (id: string) => async (dispatch: AppDispatch) => {
+  dispatch(deletePostRequest());
+
+  try {
+    await request(`/post/${id}`, {
+      method: 'DELETE',
+    });
+
+    dispatch(deletePostSuccess());
+
+    dispatch(push('/'));
+  } catch (error) {
+    dispatch(deletePostFailure(error));
+  }
+};
+
 export const saveComment = (
   comment: Comment,
   postId?: string,
@@ -115,6 +137,22 @@ export const saveComment = (
     dispatch(saveCommentSuccess(response));
   } catch (error) {
     dispatch(saveCommentFailure(error));
+  }
+};
+
+export const deleteComment = (id: string, commentId: string) => async (
+  dispatch: AppDispatch
+) => {
+  dispatch(deleteCommentRequest());
+
+  try {
+    await request(`/post/${id}/comment/${commentId}`, {
+      method: 'DELETE',
+    });
+
+    dispatch(deleteCommentSuccess(commentId));
+  } catch (error) {
+    dispatch(deleteCommentFailure(error));
   }
 };
 
