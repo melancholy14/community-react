@@ -68,7 +68,11 @@ function CommentForm({ postId, data }: CommentFormProps) {
         value={content}
         onChange={onChangeContent}
       />
-      {!isView && <Button type="submit">Submit</Button>}
+      {!isView && (
+        <Button type="submit" className="w-1/6 ml-2">
+          Submit
+        </Button>
+      )}
     </form>
   );
 }

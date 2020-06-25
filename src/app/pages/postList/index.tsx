@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import Container from 'app/layouts/container';
 
-import { selectPost } from 'app/store/selectors';
+import { selectPost, selectUser } from 'app/store/selectors';
 import { loadPostList } from 'app/store/thunks';
 import LinkButton from 'app/common/LinkButton';
 
@@ -12,6 +12,8 @@ import Post from './post';
 function PostList() {
   const { loading, list, error } = useSelector(selectPost);
   const dispatch = useDispatch();
+
+  const { name } = useSelector(selectUser);
 
   useEffect(() => {
     dispatch(loadPostList());
@@ -26,7 +28,7 @@ function PostList() {
       <div className="w-2/3 m-auto">
         <div className="flex justify-end items-center p-6">
           <div />
-          <LinkButton to="/new">Create Post</LinkButton>
+          {name && <LinkButton to="/new">Create Post</LinkButton>}
         </div>
         {loading && <div></div>}
         {!loading && (

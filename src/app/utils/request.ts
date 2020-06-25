@@ -6,7 +6,7 @@ export default async function request(
   url: string,
   options?: Partial<AxiosRequestConfig>
 ) {
-  const { method = 'GET', data } = options || {};
+  const { method = 'GET', data, headers } = options || {};
 
   try {
     const response = await axios({
@@ -15,6 +15,7 @@ export default async function request(
       data,
       headers: {
         'Content-Type': 'application/json',
+        ...headers,
       },
     });
 

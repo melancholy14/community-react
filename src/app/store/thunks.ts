@@ -1,3 +1,4 @@
+import { Base64 } from 'js-base64';
 import { push } from 'connected-react-router';
 
 import { AppDispatch } from '.';
@@ -117,13 +118,18 @@ export const saveComment = (
   }
 };
 
-export const signup = (id: string, name: string, password: string) => (
+export const signup = (id: string, name: string, password: string) => async (
   dispatch: AppDispatch
 ) => {
   dispatch(userRequest());
 
   try {
-    dispatch(userSuccess({ id, name }));
+    const response = await request('/signup', {
+      method: 'POST',
+      data: { id, name, password },
+    });
+
+    dispatch(userSuccess(response));
 
     dispatch(push('/'));
   } catch (error) {
@@ -131,13 +137,20 @@ export const signup = (id: string, name: string, password: string) => (
   }
 };
 
-export const login = (id: string, password: string) => (
+export const login = (id: string, password: string) => async (
   dispatch: AppDispatch
 ) => {
   dispatch(userRequest());
 
   try {
-    dispatch(userSuccess({ id }));
+    const response = await request('/login', {
+      method: 'POST',
+      headers: {
+        Authorization: `Basic ${Base64.encode(`${id}:${password}`)}`,
+      },
+    });
+
+    dispatch(userSuccess(response));
 
     dispatch(push('/'));
   } catch (error) {
