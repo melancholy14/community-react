@@ -8,11 +8,13 @@ import { selectUser } from 'app/store/selectors';
 
 type CommentFormProps = {
   postId?: string;
+  isNew?: boolean;
   data?: CommentType;
 };
 
-function CommentForm({ postId, data }: CommentFormProps) {
+function CommentForm({ postId, isNew, data }: CommentFormProps) {
   const [content, setContent] = useState<string>('');
+  const [isView, setIsView] = useState<boolean>(!isNew);
 
   const dispatch = useDispatch();
 
@@ -21,8 +23,10 @@ function CommentForm({ postId, data }: CommentFormProps) {
   useEffect(() => {
     if (data) {
       setContent(data.content || '');
+    } else if (!user.id) {
+      setIsView(true);
     }
-  }, [dispatch, data]);
+  }, [dispatch, data, user]);
 
   const onSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -39,6 +43,7 @@ function CommentForm({ postId, data }: CommentFormProps) {
     );
 
     setContent('');
+    setIsView(!isNew && !user.id);
   };
 
   const onDelete = () => {
@@ -54,7 +59,6 @@ function CommentForm({ postId, data }: CommentFormProps) {
   };
 
   const isAuthor = data && data?.author?.id === user.id;
-  const isView = !user.id || (data && data?.author?.id !== user.id);
 
   return (
     <form
@@ -76,17 +80,19 @@ function CommentForm({ postId, data }: CommentFormProps) {
         onChange={onChangeContent}
       />
       {!isView && (
-        <Button
-          type="submit"
-          className={`${isAuthor ? 'w-1/12' : 'w-1/6'} ml-2`}
-        >
+        <Button type="submit" className="w-1/6 ml-2">
           Submit
         </Button>
       )}
-      {isAuthor && (
-        <Button className="w-1/12 ml-2" onClick={onDelete}>
-          Delete
-        </Button>
+      {isView && isAuthor && (
+        <>
+          <Button className="w-1/12 ml-2" onClick={() => setIsView(false)}>
+            Edit
+          </Button>
+          <Button className="w-1/12 ml-2" onClick={onDelete}>
+            Delete
+          </Button>
+        </>
       )}
     </form>
   );

@@ -2,6 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { format } from 'date-fns';
 
+import { EditorState, convertToRaw, ContentState } from 'draft-js';
+import { Editor } from 'react-draft-wysiwyg';
+import draftToHtml from 'draftjs-to-html';
+import htmlToDraft from 'html-to-draftjs';
+
 import { savePost, deletePost } from 'app/store/thunks';
 
 import LinkButton from 'app/common/LinkButton';
@@ -10,6 +15,8 @@ import Button from 'app/common/Button';
 import { selectUser } from 'app/store/selectors';
 import Label from 'app/common/Label';
 
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+
 type PostFormProps = {
   data: Partial<PostDetail>;
   isView: boolean;
@@ -17,7 +24,9 @@ type PostFormProps = {
 
 function PostForm({ data, isView }: PostFormProps) {
   const [title, setTitle] = useState<string>('');
-  const [content, setContent] = useState<string>('');
+  const [editorState, setEditorState] = useState(() =>
+    EditorState.createEmpty()
+  );
 
   const user = useSelector(selectUser);
 
@@ -26,7 +35,14 @@ function PostForm({ data, isView }: PostFormProps) {
   useEffect(() => {
     if (data) {
       setTitle(data.title || '');
-      setContent(data.content || '');
+      if (data.content) {
+        const { contentBlocks, entityMap } = htmlToDraft(data.content);
+        const contentState = ContentState.createFromBlockArray(
+          contentBlocks,
+          entityMap
+        );
+        setEditorState(EditorState.createWithContent(contentState));
+      }
     }
   }, [dispatch, data]);
 
@@ -38,7 +54,7 @@ function PostForm({ data, isView }: PostFormProps) {
         {
           id: data.id,
           title,
-          content,
+          content: draftToHtml(convertToRaw(editorState.getCurrentContent())),
         },
         user
       )
@@ -57,10 +73,8 @@ function PostForm({ data, isView }: PostFormProps) {
     setTitle(value);
   };
 
-  const onChangeContent = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const { value } = event.target;
-
-    setContent(value);
+  const onEditorStateChange = (editorState: EditorState) => {
+    setEditorState(editorState);
   };
 
   return (
@@ -85,13 +99,21 @@ function PostForm({ data, isView }: PostFormProps) {
           <p>{format(new Date(data.created), 'dd MMMM yyyy, HH:mm')}</p>
         </Label>
       )}
-      <textarea
-        id="content"
-        className="w-full h-40 p-3 focus:outline-none"
-        disabled={isView}
-        value={content}
-        onChange={onChangeContent}
-      />
+      {!isView && (
+        <Editor
+          editorState={editorState}
+          wrapperClassName="bg-white w-full mb-3"
+          onEditorStateChange={onEditorStateChange}
+          toolbar={{ image: { uploadEnabled: false } }}
+        />
+      )}
+      {isView && (
+        <div
+          dangerouslySetInnerHTML={{
+            __html: draftToHtml(convertToRaw(editorState.getCurrentContent())),
+          }}
+        />
+      )}
       {!isView && (
         <div className="flex justify-end">
           <Button type="submit">Submit</Button>

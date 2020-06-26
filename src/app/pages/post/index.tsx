@@ -39,7 +39,7 @@ function Post() {
         <>
           <hr className="m-4 border-purple-700" />
           <p>What do you think on this post?</p>
-          <CommentForm postId={post.id} />
+          <CommentForm postId={post.id} isNew />
           <hr className="m-4 border-purple-700" />
           {comments &&
             comments.map((comment) => (
